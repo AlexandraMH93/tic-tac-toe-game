@@ -12,18 +12,16 @@ const fireworksContainer = document.getElementById('fireworks-container');
 
 // Puntuaciones para el algoritmo Minimax
 const scores = {
-    X: -1,   // El jugador humano
+    X: -1,   
     O: 1,    // La IA
-    tie: 0   // Empate
+    tie: 0   
 };
 
-// Lógica de cambio de turno
 function changeTurn() {
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     currentPlayerElement.textContent = currentPlayer;
 }
 
-// Mostrar fuegos artificiales mejorados
 function showFireworks() {
     fireworksContainer.classList.remove('hidden');
 
@@ -39,12 +37,12 @@ function showFireworks() {
 function createFirework(x, y) {
     const fireworkColors = ['firework-1', 'firework-2', 'firework-3', 'firework-4', 'firework-5'];
 
-    for (let i = 0; i < 15; i++) { // Crear más círculos pequeños
+    for (let i = 0; i < 15; i++) {
         const firework = document.createElement('div');
         const randomColor = fireworkColors[Math.floor(Math.random() * fireworkColors.length)];
         firework.classList.add('firework', randomColor);
 
-        firework.style.left = `${x + (Math.random() - 0.5) * 100}px`; // Posiciones aleatorias cercanas al punto de origen
+        firework.style.left = `${x + (Math.random() - 0.5) * 100}px`; 
         firework.style.top = `${y + (Math.random() - 0.5) * 100}px`;
         firework.style.width = `${Math.random() * 8 + 5}px`; // Tamaños aleatorios
         firework.style.height = firework.style.width; // Mantener el círculo
@@ -53,7 +51,6 @@ function createFirework(x, y) {
     }
 }
 
-// Verificar si hay un ganador o empate
 function checkWinner() {
     const winner = checkWinnerAI(board);
     if (winner !== null) {
@@ -72,7 +69,6 @@ function checkWinner() {
     return false;
 }
 
-// Función auxiliar para verificar el ganador (para la IA)
 function checkWinnerAI(boardState) {
     const winningCombinations = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8], 
@@ -88,10 +84,10 @@ function checkWinnerAI(boardState) {
     }
 
     if (!boardState.includes('')) {
-        return "tie"; // Devuelve "tie" si es empate
+        return "tie"; 
     }
 
-    return null; // Si no hay ganador
+    return null; 
 }
 
 // Algoritmo Minimax
@@ -107,7 +103,7 @@ function minimax(newBoard, depth, isMaximizing) {
             if (newBoard[i] === '') {
                 newBoard[i] = 'O'; // La IA hace su movimiento
                 let score = minimax(newBoard, depth + 1, false);
-                newBoard[i] = ''; // Deshacer el movimiento
+                newBoard[i] = ''; 
                 bestScore = Math.max(score, bestScore);
             }
         }
@@ -116,9 +112,9 @@ function minimax(newBoard, depth, isMaximizing) {
         let bestScore = Infinity;
         for (let i = 0; i < newBoard.length; i++) {
             if (newBoard[i] === '') {
-                newBoard[i] = 'X'; // El jugador humano hace su movimiento
+                newBoard[i] = 'X'; 
                 let score = minimax(newBoard, depth + 1, true);
-                newBoard[i] = ''; // Deshacer el movimiento
+                newBoard[i] = '';
                 bestScore = Math.min(score, bestScore);
             }
         }
@@ -168,7 +164,6 @@ function handleClick(event) {
     }
 }
 
-// Reiniciar el juego
 function resetGame() {
     board = ['', '', '', '', '', '', '', '', ''];
     gameOver = false;
@@ -176,18 +171,15 @@ function resetGame() {
     currentPlayerElement.textContent = currentPlayer;
     winnerMessage.classList.add('hidden');
     fireworksContainer.classList.add('hidden');
-    fireworksContainer.innerHTML = ''; // Limpiar fuegos artificiales
+    fireworksContainer.innerHTML = ''; 
 
-    // Limpiar las celdas
     cells.forEach(cell => {
         cell.textContent = '';
     });
 }
 
-// Asignar eventos a cada celda
 cells.forEach(cell => {
     cell.addEventListener('click', handleClick);
 });
 
-// Asignar el evento al botón de reiniciar
 resetButton.addEventListener('click', resetGame);
